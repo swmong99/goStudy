@@ -41,13 +41,17 @@ func main(){
 			//tempSliceCnt := make([]int, 2)
 			for {
 				var arrSize int
+				// 초기값이 주어진 후 그 다음번은 무조건 2개의 배열이 필요하므로 강제 배열크기 설정
 				if i == 0 {
 					arrSize = 2
-				} else{
+				} else{ // 최초 배열크기 2개 이후부터는 sliceCnt의 현재 배열 크기만큼을 temp사이즈로 정함
 					arrSize = len(sliceCnt[i])
 				}
+				// tempSliceCnt에는 위에서 설정한 arrSize만큼 크기 동적할당
 				tempSliceCnt := make([]int, arrSize)
 				for j := range sliceCnt[i]{
+					// sliceCnt[i][j]의 값에서 1을 뺀 수에서 2를 곱하면 해당 수를 저장할 수 있는 배열의 최소 크기가 나옴
+					// 따라서 계산된 수와 tempSliceCnt의 크기가 같거나작을경우는 배열 확장이 필요함
 					if len(tempSliceCnt) <= ((sliceCnt[i][j] - 1) * 2){
 						tempSliceCnt = append(tempSliceCnt, sliceCnt[i][j])
 						tempSliceCnt = append(tempSliceCnt, 1)
@@ -62,6 +66,7 @@ func main(){
 				i += 1
 
 				if i >= 2{
+					// 두 슬라이스의 동등성을 검사하기 위해서는 reflect패키지의 DeepEqual 메소드를 사용한다
 					if reflect.DeepEqual(sliceCnt[i], sliceCnt[i-1]){
 						if reflect.DeepEqual(sliceCnt[i-1], sliceCnt[i-2]) {
 							fmt.Println("같은값이 반복되어 종료합니다.")
