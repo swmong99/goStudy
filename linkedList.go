@@ -7,25 +7,42 @@ type Node struct{
 	next *Node
 }
 
-func Append(body int, head *Node, curr *Node){
+func Append(body int, head *Node, tail *Node){
 	var newNode *Node = new(Node)
-
-	if head == nil {
-		head = new(Node)
-		head.next = newNode
-	}
 
 	newNode.body = body
 	newNode.next = nil
 
-	curr = newNode
+	if head.next == nil {
+		head.next = newNode
+		tail.next = newNode
+	} else {
+		tail.next.next = newNode
+		tail.next = newNode
+	}
 }
 
 func main(){
 
-	var headNode *Node
-	var currNode *Node = new(Node)
-	Append(1, headNode, currNode)
+	var headNode *Node = new(Node)
+	var tailNode *Node = new(Node)
 
-	fmt.Println(currNode.body)
+	Append(1, headNode, tailNode)
+	Append(2, headNode, tailNode)
+	Append(3, headNode, tailNode)
+	Append(4, headNode, tailNode)
+
+	var currNode *Node = headNode.next
+
+	for {
+		fmt.Println(currNode.body)
+
+		if currNode.next == nil{
+			break
+		 } else{
+		 	currNode = currNode.next
+		}
+
+	}
 }
+
